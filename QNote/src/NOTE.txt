@@ -1,0 +1,22 @@
+当你全心全意梦想着什么的时候，整个宇宙都会协同起来，助你实现自己的心愿。
+
+And, when you want something, all the universe conspires in helping you to achieve it.
+
+—— Paulo Coelho
+————————————————
+
+int old_x;
+			int old_y;
+			public void mouseDragged(MouseEvent e) {
+				IJFrame.this.setLocation(IJFrame.this.getLocation().x+e.getX()-old_x, 
+						IJFrame.this.getLocation().y+e.getY()-old_y);
+			}
+ 
+			public void mouseMoved(MouseEvent e) {
+				old_x = e.getX();
+				old_y = e.getY();
+			}
+
+
+
+
