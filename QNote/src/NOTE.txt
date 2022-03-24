@@ -1,8 +1,22 @@
-å½“ä½ å…¨å¿ƒå…¨æ„æ¢¦æƒ³ç€ä»€ä¹ˆçš„æ—¶å€™ï¼Œæ•´ä¸ªå®‡å®™éƒ½ä¼šååŒèµ·æ¥ï¼ŒåŠ©ä½ å®ç°è‡ªå·±çš„å¿ƒæ„¿ã€‚
+µ±ÄãÈ«ĞÄÈ«ÒâÃÎÏë×ÅÊ²Ã´µÄÊ±ºò£¬Õû¸öÓîÖæ¶¼»áĞ­Í¬ÆğÀ´£¬ÖúÄãÊµÏÖ×Ô¼ºµÄĞÄÔ¸¡£
 
 And, when you want something, all the universe conspires in helping you to achieve it.
 
-â€”â€” Paulo Coelho
-â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”
+¡ª¡ª Paulo Coelho
+¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª
 
-This is just a test file for QNote
+int old_x;
+			int old_y;
+			public void mouseDragged(MouseEvent e) {
+				IJFrame.this.setLocation(IJFrame.this.getLocation().x+e.getX()-old_x, 
+						IJFrame.this.getLocation().y+e.getY()-old_y);
+			}
+ 
+			public void mouseMoved(MouseEvent e) {
+				old_x = e.getX();
+				old_y = e.getY();
+			}
+
+
+
+

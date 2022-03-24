@@ -2,11 +2,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class TitleBar extends JPanel{
+public class TitleBar extends JPanel {
 	protected JButton quit = new JButton();
 	protected JButton mini = new JButton();
 	protected JButton top = new JButton();
 	protected JButton lock = new JButton();
+	protected PopMenu menu = new PopMenu();
 	
 	public TitleBar(int width, int height) {
 		this.setSize(width, height);
@@ -53,4 +54,6 @@ public class TitleBar extends JPanel{
 		lock.setContentAreaFilled(false);
 		c.add(lock);
 	}
+
+
 }
