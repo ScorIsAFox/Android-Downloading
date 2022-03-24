@@ -46,8 +46,8 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 		this.jspCreation(); //Add the scroll pane
 		
 		/* Add listeners*/
-		this.buttonActions();
-		this.menuActions();
+		this.addButtonActions();
+		this.addMenuActions();
 		this.windowActions();
 
 		this.validate();
@@ -64,7 +64,7 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 		this.getContentPane().add(jsp);
 	}
 	
-	private void buttonActions() {
+	private void addButtonActions() {
 		bar.quit.addActionListener(this);
 		bar.mini.addActionListener(this);
 		bar.top.addActionListener(this);
@@ -72,14 +72,152 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 		bar.addMouseMotionListener(this);
 	}
 	
-	private void menuActions() {
+	private void buttonActions(ActionEvent e) {
+		/* Buttons Actions*/
+		if (e.getSource() == bar.quit) {
+			file.saveOperation(text);
+			System.exit(0);
+		}
+		
+		if (e.getSource() == bar.mini) {
+			this.setExtendedState(ICONIFIED);
+		}
+		
+		if (e.getSource() == bar.top) {
+			onTop = !onTop; //change the mode between non-onTop &onTop
+			this.setAlwaysOnTop(onTop);
+			if (onTop) { //change the icon to express different mode
+				ImageIcon icon = new ImageIcon(this.getClass().getResource("/icons/top1.png"));
+				bar.top.setIcon(icon);
+			} else {
+				ImageIcon icon = new ImageIcon(this.getClass().getResource("/icons/top0.png"));
+				bar.top.setIcon(icon);
+			}
+		}
+		
+		if (e.getSource() == bar.lock) {
+			editable = !editable; //change the mode between non-editable and editable mode
+			file.saveOperation(text);
+			text.setEditable(editable);
+		}
+	}
+	
+	private void addMenuActions() {
+		menu.copyM.addActionListener(this);
+		menu.cutM.addActionListener(this);
+		menu.pasteM.addActionListener(this);
+		menu.undoM.addActionListener(this);
+		menu.redoM.addActionListener(this);
+		
 		menu.lightM.addActionListener(this);
 		menu.darkM.addActionListener(this);
+		menu.summerM.addActionListener(this);
+		
 		menu.diaM.addActionListener(this);
 		menu.hideM.addActionListener(this);
 		menu.helpM.addActionListener(this);
 	}
 	
+	private void menuActions(ActionEvent e) {
+		/* PopMenu Actions*/
+		this.textOperations(e);
+		this.skinChange(e);
+		
+		if (e.getSource() == menu.helpM) {
+			NoteDialog helpW = new NoteDialog("Help", this.getLocation().x, this.getLocation().y);
+			helpW.createHelpDialog();
+			helpW.setVisible(true);
+		}
+	}
+	
+	private void textOperations(ActionEvent e) {
+		if (e.getSource() == menu.copyM) {
+			text.copy();
+		}
+		
+		if (e.getSource() == menu.cutM) {
+			text.cut();
+		}
+		
+		if (e.getSource() == menu.pasteM) {
+			text.paste();
+		}
+		
+		if (e.getSource() == menu.undoM) {
+			if (text.undoManager.canUndo()) {
+				text.undoManager.undo();
+			}
+		}
+		
+		if (e.getSource() == menu.redoM) {
+			if (text.undoManager.canRedo()) {
+				text.undoManager.redo();
+			}
+		}
+	}
+	
+	private void skinChange(ActionEvent e) {
+		if (e.getSource() == menu.lightM) {
+			this.setBackground(new Color(255, 69, 0, 80));
+		}
+		
+		if (e.getSource() == menu.darkM) {
+			this.setBackground(new Color(0, 0, 0, 80));
+		}
+		
+		if (e.getSource() == menu.summerM) {
+			this.setBackground(new Color(0, 191, 255, 80));
+		}
+		
+		if (e.getSource() == menu.diaM) {
+			NoteDialog sliderW = new NoteDialog("Diaphaneity", this.getLocation().x, this.getLocation().y);
+			sliderW.createSliderDialog();
+			sliderW.slider.addChangeListener(this);
+			slider = sliderW.slider;
+			sliderW.setVisible(true);
+		}
+
+		if (e.getSource() == menu.hideM) {
+			bar.quit.setVisible(menu.hide);
+			bar.mini.setVisible(menu.hide);
+			bar.top.setVisible(menu.hide);
+			bar.lock.setVisible(menu.hide);
+			
+			menu.hide = !menu.hide;
+			if (menu.hide) {
+				menu.hideM.setText("Hide the Title Bar ¡Ì");
+			} else {
+				menu.hideM.setText("Hide the Title Bar");
+			}
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		this.buttonActions(e);
+		this.menuActions(e);		
+	}
+	
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		this.setBackground(new Color(getBackground().getRed(),
+				getBackground().getGreen(),
+				getBackground().getBlue(),
+				slider.getValue()));
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		this.setLocation(this.getLocation().x + e.getX() - lastX, 
+				this.getLocation().y + e.getY() - lastY);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		lastX = e.getX();
+		lastY = e.getY();
+	}
+
 	private void windowActions() {
 		this.addWindowListener(new WindowListener() {
 
@@ -111,90 +249,4 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 
 		});
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		/* Buttons Actions*/
-		if (e.getSource() == bar.quit) {
-			file.saveOperation(text);
-			System.exit(0);
-		}
-		
-		if (e.getSource() == bar.mini) {
-			this.setExtendedState(ICONIFIED);
-		}
-		
-		if (e.getSource() == bar.top) {
-			onTop = !onTop; //change the mode between non-onTop &onTop
-			this.setAlwaysOnTop(onTop);
-			if (onTop) { //change the icon to express different mode
-				ImageIcon icon = new ImageIcon(this.getClass().getResource("/icons/top1.png"));
-				bar.top.setIcon(icon);
-			} else {
-				ImageIcon icon = new ImageIcon(this.getClass().getResource("/icons/top0.png"));
-				bar.top.setIcon(icon);
-			}
-		}
-		
-		if (e.getSource() == bar.lock) {
-			editable = !editable; //change the mode between non-editable and editable mode
-			file.saveOperation(text);
-			text.setEditable(editable);
-		}
-		
-		/* PopMenu Actions*/
-		if (e.getSource() == menu.lightM) {
-			this.setBackground(new Color(255, 69, 0, 80));
-			//this.setBackground(new Color(0, 191, 255, 80));// Blue Color,better use in summer mode
-		}
-		if (e.getSource() == menu.darkM) {
-			this.setBackground(new Color(0, 0, 0, 80));
-		}
-		
-		if (e.getSource() == menu.diaM) {
-			NoteDialog sliderW = new NoteDialog("Diaphaneity", this.getLocation().x, this.getLocation().y);
-			sliderW.createSliderDialog();
-			sliderW.slider.addChangeListener(this);
-			slider = sliderW.slider;
-			sliderW.setVisible(true);
-		}
-
-		if (e.getSource() == menu.hideM) {
-			bar.setVisible(menu.hide);
-			menu.hide = !menu.hide;
-			if (menu.hide) {
-				menu.hideM.setText("Hide the Title Bar ¡Ì");
-			} else {
-				menu.hideM.setText("Hide the Title Bar");
-			}
-		}
-		
-		if (e.getSource() == menu.helpM) {
-			NoteDialog helpW = new NoteDialog("Help", this.getLocation().x, this.getLocation().y);
-			helpW.createHelpDialog();
-			helpW.setVisible(true);
-		}
-		
-	}
-	
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		this.setBackground(new Color(getBackground().getRed(),
-				getBackground().getGreen(),
-				getBackground().getBlue(),
-				slider.getValue()));
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		this.setLocation(this.getLocation().x + e.getX() - lastX, 
-				this.getLocation().y + e.getY() - lastY);
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		lastX = e.getX();
-		lastY = e.getY();
-	}
-	
 }
