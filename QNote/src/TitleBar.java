@@ -1,6 +1,7 @@
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import java.awt.*;
 
 public class TitleBar extends JPanel {
 	protected JButton quit = new JButton();
@@ -15,6 +16,13 @@ public class TitleBar extends JPanel {
 		this.setLayout(null);
 		this.setOpaque(false);
 		this.buttonSetting(this);
+
+		JPanel move = new JPanel();
+		move.setSize(198, 28);
+		move.setLocation(45, 0);
+		move.setOpaque(false);
+		move.setCursor(new Cursor(13));
+		this.add(move);
 	}
 
 	private void buttonSetting(JPanel c) {
