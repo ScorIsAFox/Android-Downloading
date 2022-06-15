@@ -1,17 +1,13 @@
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.URL;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JSlider;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -21,8 +17,8 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 	private JSlider slider;
 	private TitleBar bar = new TitleBar(350, 35);
 	private NoteContent file = new NoteContent();
-	private NoteArea text;	
-
+	private NoteArea text;
+	private Gradient bg;
 	private boolean onTop = false;
 	private boolean editable = true;
 	private int lastX,lastY;
@@ -42,8 +38,15 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		/* Set the Components*/
-		this.getContentPane().add(bar); //Add the title bar			
+		this.getContentPane().add(bar); //Add the title bar
 		this.jspCreation(); //Add the scroll pane
+
+		URL imgUrl = this.getClass().getResource("/icons/Sunset.png"); // Add the sunset panel
+		ImageIcon image = new ImageIcon(imgUrl);
+		bg = new Gradient(image.getImage());
+		bg.setBounds(0, 0, image.getIconWidth(), image.getIconHeight());
+		bg.setVisible(false);
+		this.getContentPane().add(bg);
 		
 		/* Add listeners*/
 		this.addButtonActions();
@@ -112,6 +115,7 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 		menu.lightM.addActionListener(this);
 		menu.darkM.addActionListener(this);
 		menu.summerM.addActionListener(this);
+		menu.sunsetM.addActionListener(this);
 		
 		menu.diaM.addActionListener(this);
 		menu.hideM.addActionListener(this);
@@ -159,14 +163,23 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 	private void skinChange(ActionEvent e) {
 		if (e.getSource() == menu.lightM) {
 			this.setBackground(new Color(255, 69, 0, 80));
+			bg.setVisible(false);
 		}
 		
 		if (e.getSource() == menu.darkM) {
 			this.setBackground(new Color(0, 0, 0, 80));
+			bg.setVisible(false);
 		}
 		
 		if (e.getSource() == menu.summerM) {
 			this.setBackground(new Color(0, 191, 255, 80));
+			bg.setVisible(false);
+		}
+
+		if (e.getSource() == menu.sunsetM) {
+			this.setBackground(new Color(0, 0, 0, 1));
+			bg.setAlpha(80);
+			bg.setVisible(true);
 		}
 		
 		if (e.getSource() == menu.diaM) {
@@ -204,6 +217,8 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 				getBackground().getGreen(),
 				getBackground().getBlue(),
 				slider.getValue()));
+		bg.setAlpha(slider.getValue());
+		bg.repaint();
 	}
 
 	@Override
@@ -229,7 +244,6 @@ public class NoteFrame extends JFrame implements ActionListener, ChangeListener,
 			@Override
 			public void windowClosing(WindowEvent e) {
 				file.saveOperation(text);
-				
 			}
 
 			@Override

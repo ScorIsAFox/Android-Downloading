@@ -17,6 +17,7 @@ public class PopMenu extends JPopupMenu{
 	protected JMenuItem lightM = new JMenuItem("Light");
 	protected JMenuItem darkM = new JMenuItem("Dark");
 	protected JMenuItem summerM = new JMenuItem("Summer");
+	protected JMenuItem sunsetM = new JMenuItem("Sunset");
 	
 	protected JMenuItem diaM = new JMenuItem("Diaphaneity");
 	protected JMenuItem hideM = new JMenuItem("Hide the Title Bar");
@@ -35,6 +36,7 @@ public class PopMenu extends JPopupMenu{
 		lightM.setFont(new Font("Adobe 黑体 Std R",Font.PLAIN,14));
 		darkM.setFont(new Font("Adobe 黑体 Std R",Font.PLAIN,14));
 		summerM.setFont(new Font("Adobe 黑体 Std R",Font.PLAIN,14));
+		sunsetM.setFont(new Font("Adobe 黑体 Std R",Font.PLAIN,14));
 		diaM.setFont(new Font("Adobe 黑体 Std R",Font.PLAIN,14));
 		hideM.setFont(new Font("Adobe 黑体 Std R",Font.PLAIN,14));
 		helpM.setFont(new Font("Adobe 黑体 Std R",Font.PLAIN,14));
@@ -42,6 +44,7 @@ public class PopMenu extends JPopupMenu{
 		themeM.add(lightM);
 		themeM.add(darkM);
 		themeM.add(summerM);
+		themeM.add(sunsetM);
 
 		this.add(copyM);
 		this.add(cutM);

@@ -1,9 +1,5 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
 
 import javax.swing.JTextArea;
 
@@ -24,14 +20,15 @@ public class NoteContent {
 	
 	public void readOperation(JTextArea text) {
 		try {
-			FileReader in = new FileReader(file);
-			BufferedReader bufr = new BufferedReader(in);
+			//FileReader in = new FileReader(file);
+			BufferedReader bufr = new BufferedReader(new InputStreamReader(new FileInputStream(file),
+					Charset.forName("GBK")));
 			String s = null;
 			while ((s = bufr.readLine()) != null) {
 				text.append(s + "\n");
 			}
 			bufr.close();
-			in.close();
+			//in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -39,11 +36,12 @@ public class NoteContent {
 	
 	public void saveOperation(JTextArea text) {
 		try {
-			FileWriter out = new FileWriter(file);
-			BufferedWriter bufw = new BufferedWriter(out);
+			//FileWriter out = new FileWriter(file);
+			BufferedWriter bufw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),
+					Charset.forName("GBK")));
 			bufw.write(text.getText());
 			bufw.close();
-			out.close();
+			//out.close();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
